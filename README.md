@@ -3,8 +3,9 @@
 # (Feature-Update)
 **Cette branche `Feature-Update` est dédiée à l'amélioration de la stabilité et des performances de l'application par le biais de tests et de débogages rigoureux.**
 - Mise à jour des dépendances `requirements.txt`. 
-- Installation des outils de test `locust` et `pytest`.
+- Installation des outils de test `locust`, `pytest` et `pytest-html`.
 
+---
 ### Prérequis : 
 **_Assurez-vous d'avoir Python 3.x installé sur votre machine :_** 
 >       python --version 
@@ -43,5 +44,6 @@ pip install -r requirements.txt
 ```
 - Dépendances de tests inclus dans `requirements.txt` : 
   - `locust` pour les tests de charge
-  - `pytest` pour les tests unitaires.
+  - `pytest` pour les tests unitaires...
+  - `pytest-html`.
 ---
