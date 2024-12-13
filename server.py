@@ -30,6 +30,14 @@ app.clubs = load_clubs()
 app.competitions = load_competitions()
 
 
+def find_entity(entities, value, entity_type, search_type):
+    entity = [ent for ent in entities if ent[search_type] == value]
+    if not entity:
+        flash(f"No {entity_type} found with the provided {search_type}.")
+        return None
+    return entity[0]
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -37,32 +45,47 @@ def index():
 
 @app.route('/show_summary', methods=['POST'])
 def show_summary():
-    club = [_club for _club in app.clubs if _club['email'] == request.form['email']]
-    if not club:
-        flash("No club found with the provided email address.")
+    club = find_entity(app.clubs, request.form['email'], 'club', 'email')
+    if club is None:
         return redirect(url_for('index'))
-    return render_template('welcome.html', club=club[0], competitions=app.competitions)
+
+    return render_template('welcome.html', club=club, competitions=app.competitions)
+
 
 @app.route('/book/<competition>/<club>')
-def book(competition,club):
-    foundClub = [c for c in clubs if c['name'] == club][0]
-    foundCompetition = [c for c in competitions if c['name'] == competition][0]
-    if foundClub and foundCompetition:
-        return render_template('booking.html',club=foundClub,competition=foundCompetition)
-    else:
-        flash("Something went wrong-please try again")
-        return render_template('welcome.html', club=club, competitions=competitions)
+def book(competition, club):
+    found_club = find_entity(app.clubs, club, 'club', 'name')
+    if found_club is None:
+        return redirect(url_for('index'))
+
+    found_competition = find_entity(app.competitions, competition, 'competition', 'name')
+    if found_competition is None:
+        return render_template('welcome.html', club=found_club, competitions=app.competitions)
+
+    return render_template('booking.html', club=found_club, competition=found_competition)
 
 
-@app.route('/purchasePlaces',methods=['POST'])
-def purchasePlaces():
-    competition = [c for c in competitions if c['name'] == request.form['competition']][0]
-    club = [c for c in clubs if c['name'] == request.form['club']][0]
-    placesRequired = int(request.form['places'])
-    competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
-    flash('Great-booking complete!')
-    return render_template('welcome.html', club=club, competitions=competitions)
+@app.route('/purchase_places', methods=['POST'])
+def purchase_places():
+    club = find_entity(app.clubs, request.form['club'], 'club', 'name')
+    if club is None:
+        return redirect(url_for('index'))
 
+    competition = find_entity(app.competitions, request.form['competition'], 'competition', 'name')
+    if competition is None:
+        return render_template('welcome.html', club=club, competitions=app.competitions)
+
+    places_required = int(request.form['places'])
+
+    if places_required > int(club['points']):
+        flash("Not enough points available.")
+        return render_template('booking.html', club=club, competition=competition)
+
+    competition['numberOfPlaces'] = str(int(competition['numberOfPlaces']) - places_required)
+    club['points'] = str(int(club['points']) - places_required)
+
+    flash("Great - booking complete! You have booked place(s).")
+    return render_template('welcome.html', club=club, competitions=app.competitions)
 
 # TODO: Add route for points display
 
