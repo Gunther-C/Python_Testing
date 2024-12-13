@@ -1,3 +1,4 @@
+import os
 import json
 from flask import Flask, render_template, request, redirect, flash, url_for
 
@@ -6,15 +7,23 @@ app.secret_key = 'something_special'
 
 
 def load_clubs():
-    with open('clubs.json') as _clubs:
-        list_clubs = json.load(_clubs)['clubs']
-        return list_clubs
+    try:
+        path_club = os.path.dirname(os.path.abspath(__file__))
+        with open(os.path.join(path_club, 'clubs.json')) as _clubs:
+            list_clubs = json.load(_clubs)['clubs']
+            return list_clubs
+    except:
+        return []
 
 
 def load_competitions():
-    with open('competitions.json') as comps:
-        list_competitions = json.load(comps)['competitions']
-        return list_competitions
+    try:
+        path_competition = os.path.dirname(os.path.abspath(__file__))
+        with open(os.path.join(path_competition, 'competitions.json')) as comps:
+            list_competitions = json.load(comps)['competitions']
+            return list_competitions
+    except:
+        return []
 
 
 app.clubs = load_clubs()
