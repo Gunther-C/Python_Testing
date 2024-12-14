@@ -89,6 +89,12 @@ class TestPurchasePlace:
         assert b"Not enough points available." in rv.data
 
     def test_purchase_places_limit(self, client, mock_places_limit):
+        """
+        Test that attempting to purchase more than 12 places displays an error message.
+        :param client:
+        :param mock_places_limit:
+        :return: none
+        """
         club = mock_places_limit[0]
         competition = mock_places_limit[1]
         rv = client.post(url_for('purchase_places'),

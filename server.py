@@ -1,6 +1,7 @@
 import os
 import json
 from flask import Flask, render_template, request, redirect, flash, url_for
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'something_special'
@@ -49,7 +50,8 @@ def show_summary():
     if club is None:
         return redirect(url_for('index'))
 
-    return render_template('welcome.html', club=club, competitions=app.competitions)
+    return render_template('welcome.html', club=club, competitions=app.competitions,
+                           datetime=datetime)
 
 
 @app.route('/book/<competition>/<club>')
@@ -60,7 +62,14 @@ def book(competition, club):
 
     found_competition = find_entity(app.competitions, competition, 'competition', 'name')
     if found_competition is None:
-        return render_template('welcome.html', club=found_club, competitions=app.competitions)
+        return render_template('welcome.html', club=found_club, competitions=app.competitions,
+                               datetime=datetime)
+
+    competition_date = datetime.strptime(found_competition['date'], "%Y-%m-%d %H:%M:%S")
+    if competition_date < datetime.now():
+        flash(f"This competition {found_competition['name']} has already taken place.")
+        return render_template('welcome.html', club=found_club, competitions=app.competitions,
+                               datetime=datetime)
 
     max_places = min(12, int(found_club['points']))
 
@@ -76,7 +85,8 @@ def purchase_places():
 
     competition = find_entity(app.competitions, request.form['competition'], 'competition', 'name')
     if competition is None:
-        return render_template('welcome.html', club=club, competitions=app.competitions)
+        return render_template('welcome.html', club=club, competitions=app.competitions,
+                               datetime=datetime)
 
     places_required = int(request.form['places'])
 
@@ -92,7 +102,8 @@ def purchase_places():
     club['points'] = str(int(club['points']) - places_required)
 
     flash("Great - booking complete! You have booked place(s).")
-    return render_template('welcome.html', club=club, competitions=app.competitions)
+    return render_template('welcome.html', club=club, competitions=app.competitions,
+                           datetime=datetime)
 
 # TODO: Add route for points display
 
