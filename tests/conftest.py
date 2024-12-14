@@ -1,8 +1,8 @@
 import pytest
 from server import app
 from tests.mocks import MOCK_BDD_CLUBS, MOCK_BDD_COMPETITIONS
-from tests.mocks import COMPETITION_PLACE_1, COMPETITION_PLACES_18
-from tests.mocks import CLUB_POINT_1, CLUB_POINTS_15
+from tests.mocks import MOCK_COMPETITION_PLACE_1, MOCK_COMPETITION_PLACES_18
+from tests.mocks import MOCK_CLUB_POINT_1, MOCK_CLUB_POINTS_18
 
 
 @pytest.fixture
@@ -27,35 +27,20 @@ def mock_clubs():
 
 
 @pytest.fixture
-def club_point1():
-    original_club1 = CLUB_POINT_1.copy()
-    yield CLUB_POINT_1
-    CLUB_POINT_1.clear()
-    CLUB_POINT_1.update(original_club1)
-
-
-@pytest.fixture
 def mock_competitions():
     app.competitions = MOCK_BDD_COMPETITIONS
     return app.competitions
 
 
 @pytest.fixture
-def competitions_place1():
-    original_competition = COMPETITION_PLACE_1.copy()
-    yield COMPETITION_PLACE_1
-    COMPETITION_PLACE_1.clear()
-    COMPETITION_PLACE_1.update(original_competition)
+def mock_insufficient_points():
+    app.clubs = MOCK_CLUB_POINT_1
+    app.competitions = MOCK_COMPETITION_PLACES_18
+    return app.clubs[0], app.competitions[0]
 
 
 @pytest.fixture
-def competitions_places18():
-    original_competition = COMPETITION_PLACES_18.copy()
-    yield COMPETITION_PLACES_18
-    COMPETITION_PLACES_18.clear()
-    COMPETITION_PLACES_18.update(original_competition)
-
-
-@pytest.fixture
-def mocks_clubs_competitions(mock_clubs, mock_competitions):
-    return
+def mock_update_points():
+    app.clubs = MOCK_CLUB_POINT_1
+    app.competitions = MOCK_COMPETITION_PLACES_18
+    return app.clubs[0], app.competitions[0]

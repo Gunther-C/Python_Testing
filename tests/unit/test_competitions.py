@@ -10,6 +10,13 @@ class TestCompetitions:
         Test : competitions bdd / json
     """
     def test_show_competitions(self, client, mock_clubs, mock_competitions):
+        """
+        Test that the competitions are correctly displayed on the summary page.
+        :param client:
+        :param mock_clubs:
+        :param mock_competitions:
+        :return: none
+        """
         rv = client.post(url_for('show_summary'), data={"email": VALID_CLUB_EMAIL})
         assert rv.status_code == 200
 
@@ -18,6 +25,13 @@ class TestCompetitions:
             assert f"{competition['name']}".encode() in rv.data
 
     def test_book_invalid_competitions(self, client, mock_clubs, mock_competitions):
+        """
+        Test that the competitions are correctly displayed on the welcome page
+        :param client:
+        :param mock_clubs:
+        :param mock_competitions:
+        :return: none
+        """
         rv = client.get(url_for('book', competition=INVALID_COMPETITION_NAME, club=VALID_CLUB_NAME))
         assert rv.status_code == 200
 
@@ -26,6 +40,13 @@ class TestCompetitions:
             assert f"{competition['name']}".encode() in rv.data
 
     def test_purchase_competitions(self, client, mock_clubs, mock_competitions):
+        """
+        Test that the competitions are correctly displayed on the summary page.
+        :param client:
+        :param mock_clubs:
+        :param mock_competitions:
+        :return: none
+        """
         rv = client.post(url_for('purchase_places'),
                          data={
                             "club": VALID_CLUB_NAME,
@@ -38,6 +59,13 @@ class TestCompetitions:
             assert f"{competition['name']}".encode() in rv.data
 
     def test_purchase_invalid_competitions(self, client, mock_clubs, mock_competitions):
+        """
+        Test that the competitions are correctly displayed on the welcome page
+        :param client:
+        :param mock_clubs:
+        :param mock_competitions:
+        :return: none
+        """
         rv = client.post(url_for('purchase_places'),
                          data={
                              "club": VALID_CLUB_NAME,

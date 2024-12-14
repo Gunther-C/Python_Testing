@@ -9,30 +9,33 @@ class TestPurchasePlace:
     """
         Test : endpoint purchase_places
     """
-    def test_purchase_valid(self, client, mocks_clubs_competitions, competitions_places18, club_point1):
+    def test_purchase_valid(self, client, mock_update_points):
         """
+        Successful validation test of a booking with points update
         :param client:
-        :param mocks_clubs_competitions:
-        :param competitions_places18:
-        :param club_point1:
-        :return: Successful validation test of a booking with points update
+        :param mocks_purchase_update:
+        :return: none
         """
+        club = mock_update_points[0]
+        competition = mock_update_points[1]
         rv = client.post(url_for('purchase_places'),
                          data={
-                             "club": club_point1['name'],
-                             "competition": competitions_places18['name'],
+                             "club": club['name'],
+                             "competition": competition['name'],
                              "places": "1"
                          })
         assert rv.status_code == 200
-        assert int(club_point1['points']) == 0
-        assert f"{club_point1['name']}".encode() in rv.data
+        assert int(club['points']) == 0
+        assert f"{club['name']}".encode() in rv.data
         assert b"Great - booking complete! You have booked place(s)." in rv.data
 
-    def test_purchase_invalid_club(self, client, mocks_clubs_competitions):
+    def test_purchase_invalid_club(self, client, mock_clubs, mock_competitions):
         """
+        Club Error Redirection Test
         :param client:
-        :param mocks_clubs_competitions:
-        :return: Club Error Redirection Test
+        :param mock_clubs:
+        :param mock_competitions:
+        :return: none
         """
         rv = client.post(url_for('purchase_places'),
                          data={
@@ -47,11 +50,13 @@ class TestPurchasePlace:
         assert rv.status_code == 200
         assert b"No club found with the provided name." in rv.data
 
-    def test_purchase_invalid_competition(self, client, mocks_clubs_competitions):
+    def test_purchase_invalid_competition(self, client, mock_clubs, mock_competitions):
         """
+        Competition Error Redirection Test
         :param client:
-        :param mocks_clubs_competitions:
-        :return: Competition Error Redirection Test
+        :param mock_clubs:
+        :param mock_competitions:
+        :return: none
         """
         rv = client.post(url_for('purchase_places'),
                          data={
@@ -63,21 +68,22 @@ class TestPurchasePlace:
         assert f"{VALID_CLUB_NAME}".encode() in rv.data
         assert b"No competition found with the provided name." in rv.data
 
-    def test_purchase_point_limit(self, client, mocks_clubs_competitions, competitions_places18, club_point1):
+    def test_purchase_point_limit(self, client, mock_insufficient_points):
         """
+        Test the club cannot spend more points than it has
         :param client:
-        :param mocks_clubs_competitions:
-        :param competitions_places18:
-        :param club_point1:
-        :return: Test the club cannot spend more points than it has
+        :param mock_insufficient_points:
+        :return: none
         """
+        club = mock_insufficient_points[0]
+        competition = mock_insufficient_points[1]
         rv = client.post(url_for('purchase_places'),
                          data={
-                            "club": club_point1['name'],
-                            "competition": competitions_places18['name'],
-                            "places": str(int(club_point1['points']) + 1)
+                            "club": club['name'],
+                            "competition": competition['name'],
+                            "places": str(int(club['points']) + 1)
                         })
         assert rv.status_code == 200
-        assert f"{club_point1['name']}".encode() in rv.data
-        assert f"{competitions_places18['name']}".encode() in rv.data
+        assert f"{club['name']}".encode() in rv.data
+        assert f"{competition['name']}".encode() in rv.data
         assert b"Not enough points available." in rv.data
