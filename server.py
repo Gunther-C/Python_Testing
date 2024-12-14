@@ -12,7 +12,7 @@ def load_clubs():
         with open(os.path.join(path_club, 'clubs.json')) as _clubs:
             list_clubs = json.load(_clubs)['clubs']
             return list_clubs
-    except:
+    except (FileNotFoundError, json.JSONDecodeError):
         return []
 
 
@@ -22,7 +22,7 @@ def load_competitions():
         with open(os.path.join(path_competition, 'competitions.json')) as comps:
             list_competitions = json.load(comps)['competitions']
             return list_competitions
-    except:
+    except (FileNotFoundError, json.JSONDecodeError):
         return []
 
 
@@ -62,7 +62,10 @@ def book(competition, club):
     if found_competition is None:
         return render_template('welcome.html', club=found_club, competitions=app.competitions)
 
-    return render_template('booking.html', club=found_club, competition=found_competition)
+    max_places = min(12, int(found_club['points']))
+
+    return render_template('booking.html',
+                           club=found_club, competition=found_competition, max_places=max_places)
 
 
 @app.route('/purchase_places', methods=['POST'])
@@ -79,6 +82,10 @@ def purchase_places():
 
     if places_required > int(club['points']):
         flash("Not enough points available.")
+        return render_template('booking.html', club=club, competition=competition)
+
+    if places_required > 12:
+        flash("Booking limit of 12 places exceeded.")
         return render_template('booking.html', club=club, competition=competition)
 
     competition['numberOfPlaces'] = str(int(competition['numberOfPlaces']) - places_required)
