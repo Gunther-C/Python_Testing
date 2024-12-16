@@ -4,6 +4,8 @@ INVALID_CLUB_EMAIL = "unknown-email@mail.eu"
 VALID_CLUB_NAME = "Club 1"
 INVALID_CLUB_NAME = "invalid-club-name"
 
+CLUBS_LIST_CONTROL = {"name": "Club 4", "email": "club-numero-4@clubs.com", "points": "10"}
+
 MOCK_CLUB_POINT_1 = [{"name": "Club 1", "email": "club-numero-1@clubs.com", "points": "1"}]
 MOCK_CLUB_POINTS_18 = [{"name": "Club 1", "email": "club-numero-1@clubs.com", "points": "18"}]
 
@@ -22,7 +24,8 @@ MOCK_BDD_CLUBS = [
         "name": "Club 3",
         "email": "club-numero-3@clubs.com",
         "points": "34"
-    }
+    },
+    CLUBS_LIST_CONTROL
 ]
 
 

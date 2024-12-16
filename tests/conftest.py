@@ -27,6 +27,12 @@ def mock_clubs():
 
 
 @pytest.fixture
+def mock_invalid_clubs():
+    app.clubs = []
+    return app.clubs
+
+
+@pytest.fixture
 def mock_competitions():
     app.competitions = MOCK_BDD_COMPETITIONS
     return app.competitions
