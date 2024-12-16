@@ -31,6 +31,8 @@ INVALID_COMPETITION_NAME = "invalid-competition-name"
 
 MOCK_COMPETITION_PLACES_18 = [{"name": "La Competition 1", "date": "2025-10-22 12:30:00", "numberOfPlaces": "18"}]
 
+MOCK_COMPETITION_PLACES_1 = [{"name": "La Competition 1", "date": "2025-10-22 12:30:00", "numberOfPlaces": "1"}]
+
 COMPETITION_INVALID_DATE = {"name": "La Competition 5", "date": "2020-05-22 13:30:00", "numberOfPlaces": "18"}
 
 MOCK_BDD_COMPETITIONS = [

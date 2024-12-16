@@ -1,7 +1,7 @@
 import pytest
 from server import app
 from tests.mocks import MOCK_BDD_CLUBS, MOCK_BDD_COMPETITIONS
-from tests.mocks import MOCK_COMPETITION_PLACES_18
+from tests.mocks import MOCK_COMPETITION_PLACES_1, MOCK_COMPETITION_PLACES_18
 from tests.mocks import MOCK_CLUB_POINT_1, MOCK_CLUB_POINTS_18
 
 
@@ -50,4 +50,11 @@ def mock_update_points():
 def mock_places_limit():
     app.clubs = MOCK_CLUB_POINTS_18
     app.competitions = MOCK_COMPETITION_PLACES_18
+    return app.clubs[0], app.competitions[0]
+
+
+@pytest.fixture
+def mock_competition_places_limit():
+    app.clubs = MOCK_CLUB_POINTS_18
+    app.competitions = MOCK_COMPETITION_PLACES_1
     return app.clubs[0], app.competitions[0]

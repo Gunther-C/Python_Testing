@@ -107,3 +107,23 @@ class TestPurchasePlace:
         assert f"{club['name']}".encode() in rv.data
         assert f"{competition['name']}".encode() in rv.data
         assert b"Booking limit of 12 places exceeded." in rv.data
+
+    def test_purchase_competition_places_limit(self, client, mock_competition_places_limit):
+        """
+        Test booking more places than available.
+        :param client:
+        :param mock_competition_places_limit:
+        :return: none
+        """
+        club = mock_competition_places_limit[0]
+        competition = mock_competition_places_limit[1]
+        rv = client.post(url_for('purchase_places'),
+                         data={
+                             "club": club['name'],
+                             "competition": competition['name'],
+                             "places": "10"
+                         })
+        assert rv.status_code == 200
+        assert f"{club['name']}".encode() in rv.data
+        assert f"{competition['name']}".encode() in rv.data
+        assert f"Booking limit of {competition['numberOfPlaces']} places.".encode() in rv.data
