@@ -3,11 +3,11 @@ from flask import get_flashed_messages, url_for
 from tests.mocks import VALID_CLUB_NAME, VALID_CLUB_EMAIL, INVALID_CLUB_EMAIL
 
 
-class TestFunctionalLogout:
+class TestIndividualLogout:
     """
         Test : endpoint logout
     """
-    def test_functional_logout(self, client):
+    def test_individual_logout(self, client):
         """
         Test the logout functionality
         :param client:

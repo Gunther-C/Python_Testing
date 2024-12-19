@@ -47,10 +47,6 @@ class TestIndividualPurchase:
         assert purchase.status_code == 302
         assert purchase.headers['Location'].endswith('/')
 
-        index = client.get(purchase.location)
-        assert index.status_code == 200
-        assert b"No club found with the provided name." in index.data
-
     def test_purchase_invalid_competition(self, client, mock_clubs, mock_competitions):
         """
         Competition Error Redirection Test

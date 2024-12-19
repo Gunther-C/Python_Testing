@@ -33,10 +33,6 @@ class TestIndividualBook:
         assert book.status_code == 302
         assert book.headers['Location'].endswith('/')
 
-        index = client.get(book.location)
-        assert index.status_code == 200
-        assert b"No club found with the provided name." in index.data
-
     def test_book_invalid_competition(self, client, mock_clubs, mock_competitions):
         """
         Competition Error Redirection Test

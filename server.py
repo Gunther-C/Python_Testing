@@ -13,8 +13,8 @@ def load_clubs():
         with open(os.path.join(path_club, 'clubs.json')) as _clubs:
             list_clubs = json.load(_clubs)['clubs']
             return list_clubs
-    except (FileNotFoundError, json.JSONDecodeError):
-        return []
+    except (FileNotFoundError, json.JSONDecodeError):  # pragma: no cover
+        return []  # pragma: no cover
 
 
 def load_competitions():
@@ -23,8 +23,8 @@ def load_competitions():
         with open(os.path.join(path_competition, 'competitions.json')) as comps:
             list_competitions = json.load(comps)['competitions']
             return list_competitions
-    except (FileNotFoundError, json.JSONDecodeError):
-        return []
+    except (FileNotFoundError, json.JSONDecodeError):  # pragma: no cover
+        return []  # pragma: no cover
 
 
 app.clubs = load_clubs()

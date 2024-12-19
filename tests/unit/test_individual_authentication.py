@@ -3,11 +3,11 @@ from flask import get_flashed_messages, url_for
 from tests.mocks import VALID_CLUB_NAME, VALID_CLUB_EMAIL, INVALID_CLUB_EMAIL
 
 
-class TestFunctionalAuthentication:
+class TestIndividualAuthentication:
     """
         Test : endpoint show_summary
     """
-    def test_functional_index(self, client):
+    def test_index(self, client):
         """
         Test that the index page loads correctly
         :param client:
@@ -17,7 +17,7 @@ class TestFunctionalAuthentication:
         assert index.status_code == 200
         assert "GUDLFT Registration".encode() in index.data
 
-    def test_functional_authentication_valid(self, client, mock_clubs, mock_competitions):
+    def test_authentication_valid(self, client, mock_clubs, mock_competitions):
         """
         Test that the summary page displays the correct information
         :param client:
@@ -29,7 +29,7 @@ class TestFunctionalAuthentication:
         assert homepage.status_code == 200
         assert f"{VALID_CLUB_NAME}".encode() in homepage.data
 
-    def test_functional_authentication_invalid(self, client, mock_clubs, mock_competitions):
+    def test_authentication_invalid(self, client, mock_clubs, mock_competitions):
         """
         Test that an unknown email redirects to the index page and displays an error message
         :param client:
