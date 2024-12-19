@@ -1,9 +1,9 @@
 import pytest
 from flask import url_for
-from tests.mocks import VALID_CLUB_NAME, CLUBS_LIST_CONTROL
+from tests.mocks import LIST_CONTROL_NAME, LIST_CONTROL_POINT
 
 
-class TestShowClubs:
+class TestIndividualShowClubs:
     """
         Test : endpoint show_clubs
     """
@@ -14,9 +14,9 @@ class TestShowClubs:
         :param mock_clubs:
         :return: none
         """
-        rv = client.get(url_for('show_clubs'))
-        assert rv.status_code == 200
-        assert b"Clubs and Points" in rv.data
+        clubs = client.get(url_for('show_clubs'))
+        assert clubs.status_code == 200
+        assert b"Clubs and Points" in clubs.data
 
     def test_show_invalid_club(self, client, mock_invalid_clubs):
         """
@@ -25,9 +25,9 @@ class TestShowClubs:
         :param mock_invalid_clubs:
         :return: none
         """
-        rv = client.get(url_for('show_clubs'))
-        assert rv.status_code == 302
-        assert rv.headers['Location'].endswith('/')
+        clubs = client.get(url_for('show_clubs'))
+        assert clubs.status_code == 302
+        assert clubs.headers['Location'].endswith('/')
 
     def test_clubs_points_display(self, client, mock_clubs):
         """
@@ -36,8 +36,7 @@ class TestShowClubs:
         :param mock_clubs:
         :return: none
         """
-        rv = client.get(url_for('show_clubs'))
-        assert rv.status_code == 200
-        assert f"{VALID_CLUB_NAME}".encode() in rv.data
-        assert f"{CLUBS_LIST_CONTROL['name']}".encode() in rv.data
-        assert f"{CLUBS_LIST_CONTROL['points']}".encode() in rv.data
+        clubs = client.get(url_for('show_clubs'))
+        assert clubs.status_code == 200
+        assert f"{LIST_CONTROL_NAME}".encode() in clubs.data
+        assert f"{LIST_CONTROL_POINT}".encode() in clubs.data

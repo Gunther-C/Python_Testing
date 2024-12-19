@@ -106,6 +106,7 @@ def purchase_places():
     club['points'] = str(int(club['points']) - places_required)
 
     flash("Great - booking complete! You have booked place(s).")
+
     return render_template('welcome.html', club=club, competitions=app.competitions,
                            datetime=datetime)
 
@@ -113,6 +114,7 @@ def purchase_places():
 @app.route('/show_clubs')
 def show_clubs():
     if not app.clubs:
+        flash("No registered club.")
         return redirect(url_for('index'))
 
     clubs_list = sorted(app.clubs, key=lambda x: x['points'], reverse=True)

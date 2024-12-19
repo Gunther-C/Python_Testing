@@ -1,8 +1,9 @@
 import pytest
 from server import app
 from tests.mocks import MOCK_BDD_CLUBS, MOCK_BDD_COMPETITIONS
-from tests.mocks import MOCK_COMPETITION_PLACES_1, MOCK_COMPETITION_PLACES_18
-from tests.mocks import MOCK_CLUB_POINT_1, MOCK_CLUB_POINTS_18
+from tests.mocks import MOCK_INSUFFICIENT_POINT, MOCK_UPDATE_POINT
+from tests.mocks import MOCK_PLACES_LIMIT, MOCK_COMPETITION_PLACES_LIMIT
+from tests.mocks import MOCK_FULL_FLOW
 
 
 @pytest.fixture
@@ -40,27 +41,34 @@ def mock_competitions():
 
 @pytest.fixture
 def mock_insufficient_points():
-    app.clubs = MOCK_CLUB_POINT_1
-    app.competitions = MOCK_COMPETITION_PLACES_18
+    app.clubs = [MOCK_INSUFFICIENT_POINT[0]]
+    app.competitions = [MOCK_INSUFFICIENT_POINT[1]]
     return app.clubs[0], app.competitions[0]
 
 
 @pytest.fixture
 def mock_update_points():
-    app.clubs = MOCK_CLUB_POINT_1
-    app.competitions = MOCK_COMPETITION_PLACES_18
+    app.clubs = [MOCK_UPDATE_POINT[0]]
+    app.competitions = [MOCK_UPDATE_POINT[1]]
     return app.clubs[0], app.competitions[0]
 
 
 @pytest.fixture
 def mock_places_limit():
-    app.clubs = MOCK_CLUB_POINTS_18
-    app.competitions = MOCK_COMPETITION_PLACES_18
+    app.clubs = [MOCK_PLACES_LIMIT[0]]
+    app.competitions = [MOCK_PLACES_LIMIT[1]]
     return app.clubs[0], app.competitions[0]
 
 
 @pytest.fixture
 def mock_competition_places_limit():
-    app.clubs = MOCK_CLUB_POINTS_18
-    app.competitions = MOCK_COMPETITION_PLACES_1
+    app.clubs = [MOCK_COMPETITION_PLACES_LIMIT[0]]
+    app.competitions = [MOCK_COMPETITION_PLACES_LIMIT[1]]
+    return app.clubs[0], app.competitions[0]
+
+
+@pytest.fixture
+def mock_full_flow():
+    app.clubs = [MOCK_FULL_FLOW[0]]
+    app.competitions = [MOCK_FULL_FLOW[1]]
     return app.clubs[0], app.competitions[0]
