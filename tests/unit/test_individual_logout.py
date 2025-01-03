@@ -1,6 +1,5 @@
 import pytest
-from flask import get_flashed_messages, url_for
-from tests.mocks import VALID_CLUB_NAME, VALID_CLUB_EMAIL, INVALID_CLUB_EMAIL
+from flask import url_for
 
 
 class TestIndividualLogout:

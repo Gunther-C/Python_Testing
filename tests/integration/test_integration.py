@@ -1,6 +1,5 @@
 import pytest
-from flask import get_flashed_messages, url_for
-from tests.mocks import BDD_CLUBS, BDD_COMPETITIONS
+from flask import url_for
 from tests.mocks import VALID_CLUB_NAME, INVALID_CLUB_NAME, VALID_CLUB_EMAIL, INVALID_CLUB_EMAIL
 
 

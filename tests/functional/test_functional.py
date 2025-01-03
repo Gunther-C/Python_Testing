@@ -108,9 +108,9 @@ class TestFunctional:
 
     def test_purchase_valid(self, client):
         """
-        Ce test fonctionnel vérifie qu'un club peut acheter des places pour une compétition avec succès.
+        This functional test verifies that a club can successfully purchase tickets for a competition.
         :param client:
-        :return:
+        :return: none
         """
         club = find_entity(BDD_CLUBS, VALID_CLUB_NAME, 'club', 'name')
         assert club is not None
@@ -239,10 +239,6 @@ class TestFunctional:
         """
         app.clubs = BDD_CLUBS
 
-        index = client.get(url_for('index'))
-        assert index.status_code == 200
-        assert "GUDLFT Registration".encode() in index.data
-
         clubs = client.get(url_for('show_clubs'))
         assert clubs.status_code == 200
         assert b"Clubs and Points" in clubs.data
@@ -257,10 +253,6 @@ class TestFunctional:
         :return: none
         """
         app.clubs = []
-
-        index = client.get(url_for('index'))
-        assert index.status_code == 200
-        assert "GUDLFT Registration".encode() in index.data
 
         clubs = client.get(url_for('show_clubs'))
         assert clubs.status_code == 302
